@@ -27,9 +27,10 @@ Compile all files together using G++:
 ```bash
 g++ main.cpp portal.cpp Database.cpp login.cpp -o SmartPlacementPortal
 
-
 # Windows
 .\SmartPlacementPortal.exe
 
 # Linux / macOS
 ./SmartPlacementPortal
+
+"If you find this useful, please star! ⭐"
