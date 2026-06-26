@@ -34,3 +34,12 @@ g++ main.cpp portal.cpp Database.cpp login.cpp -o SmartPlacementPortal
 ./SmartPlacementPortal
 
 "If you find this useful, please star! ⭐"
+```
+Author
+Divyanshu
+
+Web Development Enthusiast | Problem Solver
+
+Thank you for visiting the repository.
+
+If you like this project, consider giving it a ⭐ and sharing your feedback.
