@@ -1,11 +1,8 @@
-
-
 #include "Portal.h"
 #include "Database.h"   
 #include <iostream>
 #include <iomanip>      
 #include <algorithm>    
-
 using namespace std;
 
 Portal::Portal() {
