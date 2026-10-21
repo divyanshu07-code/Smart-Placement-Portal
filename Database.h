@@ -1,18 +1,23 @@
-#ifndef DATABASE_H
+﻿#ifndef DATABASE_H
 #define DATABASE_H
 
-#include <string>
 #include <vector>
-#include <fstream>
+#include <string>
 #include "Portal.h"
 
 class Database {
+private:
+    std::string studentsFile;
+    std::string companiesFile;
+
 public:
+    Database(const std::string& sFile = "students.txt", const std::string& cFile = "companies.txt");
+
     void saveStudents(const std::vector<Student>& students);
-    void saveCompanies(const std::vector<Company>& companies);
-    
     std::vector<Student> loadStudents();
+
+    void saveCompanies(const std::vector<Company>& companies);
     std::vector<Company> loadCompanies();
 };
 
-#endif
+#endif // DATABASE_H

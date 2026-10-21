@@ -1,0 +1,5 @@
+Google|Software Engineer|8.5|0|32.0
+Microsoft|Cloud Engineer|8.0|0|28.5
+TCS Digital|Systems Engineer|7.0|1|7.5
+Infosys|Specialist Programmer|6.5|1|9.5
+Amazon|SDE-1|8.2|0|30.0

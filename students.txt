@@ -1,0 +1,5 @@
+202501091|Divyanshu Sharma|ICT|8.85|0|1|Google
+202501092|Aarav Patel|CSE|8.85|1|0|None
+202501093|Ananya Iyer|MNC|9.20|0|1|Microsoft
+202501094|Rohan Verma|ECE|7.40|1|0|None
+202501095|Sneha Kulkarni|AI|8.10|0|0|None

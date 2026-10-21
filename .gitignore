@@ -1,0 +1,13 @@
+﻿# Build artifacts
+*.exe
+*.o
+*.obj
+build/
+bin/
+
+# IDE / Editor configuration
+.vscode/
+.vs/
+
+# Runtime credentials generated dynamically
+credentials.txt

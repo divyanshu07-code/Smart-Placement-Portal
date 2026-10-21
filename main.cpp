@@ -1,35 +1,61 @@
-#include <iostream>
+﻿#include <iostream>
+#include <limits>
 #include "Portal.h"
+#include "login.h"
 
 using namespace std;
 
-void menu() {
-    cout << "\n====== SMART PLACEMENT PORTAL ======\n";
-    cout << "1. Add Student\n";
-    cout << "2. Display Students\n";
-    cout << "3. Add Company\n";
-    cout << "4. Display Companies\n";
-    cout << "5. Leaderboard\n";
-    cout << "6. Eligibility Check\n";
-    cout << "7. Analytics\n";
-    cout << "8. Exit\n";
-    cout << "====================================\n";
+void showMenu() {
+    cout << "\n=============================================\n";
+    cout << "           SMART PLACEMENT PORTAL            \n";
+    cout << "=============================================\n";
+    cout << " [STUDENT MANAGEMENT]\n";
+    cout << "   1. Add New Student Record\n";
+    cout << "   2. Display All Students\n";
+    cout << "   3. Search Student (by ID / Name)\n";
+    cout << "   4. Mark Student as Placed\n";
+    cout << "   5. Delete Student Record\n\n";
+    cout << " [COMPANY MANAGEMENT]\n";
+    cout << "   6. Add Recruiting Company Drive\n";
+    cout << "   7. Display All Recruiting Companies\n";
+    cout << "   8. Delete Company Drive\n\n";
+    cout << " [DRIVE MATCHING & ANALYTICS]\n";
+    cout << "   9. Merit Leaderboard (CGPA & Tie-Breaker)\n";
+    cout << "  10. Check Student Eligibility (by ID)\n";
+    cout << "  11. Generate Company Shortlist (by Company)\n";
+    cout << "  12. Placement Statistics & Analytics\n\n";
+    cout << " [SETTINGS & EXIT]\n";
+    cout << "  13. Change Admin Password\n";
+    cout << "  14. Exit Portal\n";
+    cout << "=============================================\n";
 }
 
 int main() {
-    Portal portal;
-    int choice;
+    cout << "\n*********************************************\n";
+    cout << "*    CAMPUS PLACEMENT MANAGEMENT SYSTEM     *\n";
+    cout << "*********************************************\n";
 
-    do {
-        menu();
-        cout << "Enter Choice: ";
-        
+    Login auth;
+    if (!auth.authenticate()) {
+        cout << "\n[!] System Terminated due to failed authentication.\n";
+        return 1;
+    }
+
+    Portal portal;
+    int choice = 0;
+
+    while (true) {
+        showMenu();
+        cout << "Enter your choice (1-14): ";
+
         if (!(cin >> choice)) {
-            cout << "Invalid alphanumeric input string. Exiting program loop safely.\n";
-            break;
+            cout << "\n[!] Invalid input! Please enter a number between 1 and 14.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
         }
 
-        switch(choice) {
+        switch (choice) {
             case 1:
                 portal.addStudent();
                 break;
@@ -37,27 +63,46 @@ int main() {
                 portal.displayStudents();
                 break;
             case 3:
-                portal.addCompany();
+                portal.searchStudent();
                 break;
             case 4:
-                portal.displayCompanies();
+                portal.markStudentPlaced();
                 break;
             case 5:
-                portal.leaderboard();
+                portal.deleteStudent();
                 break;
             case 6:
-                portal.eligibilityCheck();
+                portal.addCompany();
                 break;
             case 7:
-                portal.analytics();
+                portal.displayCompanies();
                 break;
             case 8:
-                cout << "Exiting Smart Portal system safely...\n";
+                portal.deleteCompany();
                 break;
+            case 9:
+                portal.leaderboard();
+                break;
+            case 10:
+                portal.eligibilityCheck();
+                break;
+            case 11:
+                portal.companyShortlist();
+                break;
+            case 12:
+                portal.analytics();
+                break;
+            case 13:
+                auth.changePassword();
+                break;
+            case 14:
+                cout << "\n[+] Thank you for using Smart Placement Portal. Exiting safely...\n";
+                return 0;
             default:
-                cout << "Invalid Choice! Please enter numbers 1 through 8.\n";
+                cout << "\n[!] Invalid selection! Please enter a valid option (1-14).\n";
+                break;
         }
-    } while(choice != 8);
+    }
 
     return 0;
 }

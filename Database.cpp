@@ -1,13 +1,17 @@
-#include "Database.h"
+﻿#include "Database.h"
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
 using namespace std;
 
+Database::Database(const string& sFile, const string& cFile)
+    : studentsFile(sFile), companiesFile(cFile) {}
+
 void Database::saveStudents(const vector<Student>& students) {
-    ofstream file("students.txt");
+    ofstream file(studentsFile);
     if (!file) {
-        cerr << "⚠️ [System Error] Disk Write Failed: Cannot open students.txt\n";
+        cerr << "[!] System Error: Cannot write to " << studentsFile << "\n";
         return;
     }
     
@@ -19,23 +23,9 @@ void Database::saveStudents(const vector<Student>& students) {
     file.close();
 }
 
-void Database::saveCompanies(const vector<Company>& companies) {
-    ofstream file("companies.txt");
-    if (!file) {
-        cerr << "⚠️ [System Error] Disk Write Failed: Cannot open companies.txt\n";
-        return;
-    }
-    
-    for (const auto& c : companies) {
-        file << c.name << "|" << c.role << "|" << c.minCGPA << "|" 
-             << c.maxBacklogsAllowed << "|" << c.ctc << "\n";
-    }
-    file.close();
-}
-
 vector<Student> Database::loadStudents() {
     vector<Student> list;
-    ifstream file("students.txt");
+    ifstream file(studentsFile);
     if (!file) return list; 
     
     string line;
@@ -46,11 +36,11 @@ vector<Student> Database::loadStudents() {
 
         stringstream ss(line);
         string id, name, branch, company, temp;
-        double cgpa;
-        int backlogs, isPlacedInt;
+        double cgpa = 0.0;
+        int backlogs = 0, isPlacedInt = 0;
 
         try {
-            if (!getline(ss, id, '|')) throw runtime_error("Missing ID");
+            if (!getline(ss, id, '|')) throw runtime_error("Missing Student ID");
             if (!getline(ss, name, '|')) throw runtime_error("Missing Name");
             if (!getline(ss, branch, '|')) throw runtime_error("Missing Branch");
             
@@ -68,18 +58,30 @@ vector<Student> Database::loadStudents() {
             list.push_back({id, name, branch, cgpa, backlogs, (isPlacedInt == 1), company});
         } 
         catch (const exception& e) {
-        
-            
-            cerr << "⚙️ [Data Corruption Corrupted] Skipped bad record at line " << lineNum << " - Reason: " << e.what() << "\n";
+            cerr << "[!] Warning: Skipped invalid student record at line " << lineNum << " (" << e.what() << ")\n";
         }
     }
     file.close();
     return list;
 }
 
+void Database::saveCompanies(const vector<Company>& companies) {
+    ofstream file(companiesFile);
+    if (!file) {
+        cerr << "[!] System Error: Cannot write to " << companiesFile << "\n";
+        return;
+    }
+    
+    for (const auto& c : companies) {
+        file << c.name << "|" << c.role << "|" << c.minCGPA << "|" 
+             << c.maxBacklogsAllowed << "|" << c.ctc << "\n";
+    }
+    file.close();
+}
+
 vector<Company> Database::loadCompanies() {
     vector<Company> list;
-    ifstream file("companies.txt");
+    ifstream file(companiesFile);
     if (!file) return list;
     
     string line;
@@ -90,8 +92,8 @@ vector<Company> Database::loadCompanies() {
 
         stringstream ss(line);
         string name, role, temp;
-        double minCGPA, ctc;
-        int maxBacklogs;
+        double minCGPA = 0.0, ctc = 0.0;
+        int maxBacklogs = 0;
 
         try {
             if (!getline(ss, name, '|')) throw runtime_error("Missing Company Name");
@@ -103,13 +105,13 @@ vector<Company> Database::loadCompanies() {
             if (!getline(ss, temp, '|')) throw runtime_error("Missing Max Backlogs");
             maxBacklogs = stoi(temp);
             
-            if (!getline(ss, temp)) throw runtime_error("Missing Package Info");
+            if (!getline(ss, temp)) throw runtime_error("Missing CTC Package");
             ctc = stod(temp);
 
             list.push_back({name, role, minCGPA, maxBacklogs, ctc});
         } 
         catch (const exception& e) {
-            cerr << "⚙️ [Data Corruption Warning] Skipped bad company drive entry at line " << lineNum << " - Reason: " << e.what() << "\n";
+            cerr << "[!] Warning: Skipped invalid company record at line " << lineNum << " (" << e.what() << ")\n";
         }
     }
     file.close();
